@@ -35,7 +35,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /**
  * This file provides basic Telop driving for a Pushbot robot.
@@ -52,9 +51,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="UltroDrive", group="Pushbot")
+@TeleOp(name="UltroDriveDuplicate", group="Pushbot")
 //@Disabled
-public class UltroDrive extends OpMode {
+public class UltroDriveDuplicate extends OpMode {
     double          intakeOffset  = 0.0 ;                  // Servo mid position
     final double    INTAKE_SPEED  = 0.02 ;
     double          CLOSED = 0.75;
@@ -67,7 +66,7 @@ public class UltroDrive extends OpMode {
     double  power   = 0;
     boolean rampUp  = true;
     /* Declare OpMode members. */
-    org.firstinspires.ftc.teamcode.HardwarePushbot robot       = new org.firstinspires.ftc.teamcode.HardwarePushbot();   // Use a Pushbot's hardware
+    HardwarePushbot robot       = new HardwarePushbot();   // Use a Pushbot's hardware
     public ElapsedTime runtime = new ElapsedTime();
 
 

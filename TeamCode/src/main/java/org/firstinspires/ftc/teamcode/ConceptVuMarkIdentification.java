@@ -26,12 +26,14 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -65,9 +67,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@Autonomous(name="Concept: VuMark Id", group ="Concept")
-@Disabled
+@Autonomous(name="Concept: VuMark Id", group ="Pushbot")
+//@Disabled
 public class ConceptVuMarkIdentification extends LinearOpMode {
+
+    org.firstinspires.ftc.teamcode.HardwarePushbot robot       = new org.firstinspires.ftc.teamcode.HardwarePushbot();   // Use a Pushbot's hardware
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -103,7 +107,7 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
          * Once you've obtained a license key, copy the string from the Vuforia web site
          * and paste it in to your code onthe next line, between the double quotes.
          */
-        parameters.vuforiaLicenseKey = "ATsODcD/////AAAAAVw2lR...d45oGpdljdOh5LuFB9nDNfckoxb8COxKSFX";
+        parameters.vuforiaLicenseKey = "AWsJ5iL/////AAAAGcydaMOy3UO3nEa/8sl/KSQoZXrNfd5+zhs8IbQdAzh/0alGOmxW0JULoug0Y7kugTpJu5wu3YPAJAcYtSLJFIxZ7t34g9f7XqNeUKXall1mAVbzWh5aG0FNaoflkkKwPtj+eOVjZo4bA6TZ6f9WFChvsdlaao7me/9/qBG06GSYxKR4oIksiGXHV2uo8ROziIN7x1bevU4g7VHPrgQIpygIVPuDW+Bq2blvKOtqcYop3q54k1tfhhPiA2oSLdKgFOuOEIMDf/kLZDQ4F2RQHGLJIRvErcbMwUoGs1eEa01xT21r767Ve72pvU8m/GC/fx2oTizi1z+bEvtKjBu+YeW760OpGhZKCe1ECPjt772z";
 
         /*
          * We also indicate which camera on the RC that we wish to use.
