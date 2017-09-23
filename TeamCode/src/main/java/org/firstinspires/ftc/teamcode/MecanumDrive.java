@@ -51,22 +51,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="UltroDriveDuplicate", group="Pushbot")
+@TeleOp(name="MecanumDrive", group="Pushbot")
 //@Disabled
-public class UltroDriveDuplicate extends OpMode {
-    double          intakeOffset  = 0.0 ;                  // Servo mid position
-    final double    INTAKE_SPEED  = 0.02 ;
-    double          CLOSED = 0.75;
+public class MecanumDrive extends OpMode {
 
-    static final double INCREMENT   = 0.001; // amount to ramp motor each CYCLE_MS cycle
-    static final double DECREASE    = -0.01;
-    static final double MAX_FWD     =  1.0;     // Maximum FWD power applied to motor
-    static final double MAX_REV     =  0;     // Maximum REV power applied to motor
-
-    double  power   = 0;
-    boolean rampUp  = true;
     /* Declare OpMode members. */
-    HardwarePushbot robot       = new HardwarePushbot();   // Use a Pushbot's hardware
+    HardwarePushbotMecanum robot       = new HardwarePushbotMecanum();   // Use a Pushbot's hardware
     public ElapsedTime runtime = new ElapsedTime();
 
 
@@ -79,9 +69,8 @@ public class UltroDriveDuplicate extends OpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-        robot.limiter.setPosition(1);
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Driver");    //
+        telemetry.addData("Say", "Hello and, again, welcome to the Aperture Science computer-aided enrichment center.");    //
     }
 
     /*
@@ -104,74 +93,41 @@ public class UltroDriveDuplicate extends OpMode {
     @Override
     public void loop() {
 
+        double forwards;
+        double backwards;
         double left;
         double right;
-        // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        left = -gamepad1.left_stick_y;
-        right = -gamepad1.right_stick_y;
-        robot.leftFrontMotor.setPower(left);
+        // Whole robot moves foreward when left joystick moves up on the y-axis (note: The joystick goes negative when pushed forwards, so negate it)
+        forwards = -gamepad1.left_stick_y; // 1
+        robot.leftFrontMotor.setPower(forwards);
+        robot.leftBackMotor.setPower(forwards);
+        robot.rightFrontMotor.setPower(forwards);
+        robot.rightBackMotor.setPower(forwards);
+
+        backwards = gamepad1.left_stick_y; // -1
+        robot.leftFrontMotor.setPower(backwards);
+        robot.leftBackMotor.setPower(backwards);
+        robot.rightFrontMotor.setPower(backwards);
+        robot.rightBackMotor.setPower(backwards);
+
+        left = gamepad1.left_stick_x; // 1?
+        robot.leftFrontMotor.setPower(-left);
         robot.leftBackMotor.setPower(left);
-        robot.rightFrontMotor.setPower(right);
+        robot.rightFrontMotor.setPower(left);
+        robot.rightBackMotor.setPower(-left);
+
+        right = -gamepad1.left_stick_x;
+        robot.leftFrontMotor.setPower(right);
+        robot.leftBackMotor.setPower(-right);
+        robot.rightFrontMotor.setPower(-right);
         robot.rightBackMotor.setPower(right);
-        robot.flyWheelMotor.setPower(power);
-
-        if(gamepad2.dpad_up){
-            robot.intakeMotor.setPower(1.0);
-        }
-        if(gamepad2.dpad_down){
-            robot.intakeMotor.setPower(-1.0);
-        }
-        if(gamepad2.dpad_left) {
-            robot.intakeMotor.setPower(0);
-        }
-        if(gamepad2.dpad_right) {
-            robot.intakeMotor.setPower(0);
-        }
-
-        if(gamepad2.right_bumper) {
-            power += INCREMENT;
-            if (power >= MAX_FWD) {
-                power = MAX_FWD;
-                rampUp = true;
-            }
-        }
-        if (gamepad2.left_bumper) {
-            power -= INCREMENT;
-            if (power <= 0.0) {
-                power = 0.0;
-                rampUp = true;
-            }
-        }
-        if(power <= 0.0) {
-            power = 0.0;
-        }
-        if(power >= 1.0){
-            power = 1.0;
-        }
-        if(gamepad2.a){
-            robot.limiter.setPosition(.2);
-        }
-        else {
-            robot.limiter.setPosition(1);
-        }
-
-        if(gamepad1.x)
-            robot.leftBeacon.setPosition(0.16);
-
-        if(gamepad1.y)
-            robot.leftBeacon.setPosition(1);
-
-        if(gamepad1.a)
-            robot.rightBeacon.setPosition(0.16);
-
-        if(gamepad1.b)
-            robot.rightBeacon.setPosition(1);
-
-
-
-        telemetry.addData("Flywheel Power", "%5.2f", power);
         telemetry.update();
 
+        double turn = gamepad1.right_stick_x; // right stick
+        robot.leftFrontMotor.setPower(turn);
+        robot.leftBackMotor.setPower(turn);
+        robot.rightBackMotor.setPower(-turn);
+        robot.rightBackMotor.setPower(-turn);
     }
 
     //stolen from the autonomous to automatically align with the white line
