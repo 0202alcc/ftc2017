@@ -141,6 +141,11 @@ public class MecanumDriveTrig extends OpMode {
             robot.leftBackMotor.setPower(v3);
             robot.rightBackMotor.setPower(v4);
 
+        telemetry.addData("v1: ",v1);
+        telemetry.addData("v2: ",v2);
+        telemetry.addData("v3: ",v3);
+        telemetry.addData("v4: ",v4);
+
 
     }
 
