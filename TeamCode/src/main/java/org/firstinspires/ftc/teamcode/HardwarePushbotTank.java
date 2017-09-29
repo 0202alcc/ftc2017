@@ -29,13 +29,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
-public class HardwarePushbotMecanum {
+public class HardwarePushbotTank {
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public HardwarePushbotMecanum(){
+    public HardwarePushbotTank(){
 
     }
 
@@ -44,6 +44,7 @@ public class HardwarePushbotMecanum {
     public DcMotor leftBackMotor  = null;
     public DcMotor rightFrontMotor = null;
     public DcMotor rightBackMotor = null;
+
 
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
@@ -55,21 +56,28 @@ public class HardwarePushbotMecanum {
         leftBackMotor = hwMap.dcMotor.get("leftBack");
         rightFrontMotor = hwMap.dcMotor.get("rightFront");
         rightBackMotor = hwMap.dcMotor.get("rightBack");
+
+
         // Set Motor Direction
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
         rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
+
+
         //Set all motor powers to zero
         leftFrontMotor.setPower(0);
         leftBackMotor.setPower(0);
         rightFrontMotor.setPower(0);
         rightBackMotor.setPower(0);
+
+
         //Establish whether or not you're using encoders
-        leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
     }
     /***
