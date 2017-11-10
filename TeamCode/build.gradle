@@ -14,3 +14,9 @@ dependencies {
     compile project(':endercv')
     compile project(':openCVLibrary320')
 }
+
+
+// Custom definitions may go here
+
+// Include common definitions from above.
+apply from: '../build.common.gradle'
