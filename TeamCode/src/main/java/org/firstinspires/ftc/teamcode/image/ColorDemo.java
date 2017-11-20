@@ -13,11 +13,11 @@ import org.corningrobotics.enderbots.endercv.CameraViewDisplay;
  *
  */
 @TeleOp(name="Blue Vision Demo")
-public class ExampleBlueVisionDemo extends OpMode {
-    ExampleBlueVision blueVision;
+public class ColorDemo extends OpMode {
+    ColorVision blueVision;
     @Override
     public void init() {
-        blueVision = new ExampleBlueVision();
+        blueVision = new ColorVision();
         // can replace with ActivityViewDisplay.getInstance() for fullscreen
         blueVision.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
         blueVision.setShowBlue(false);

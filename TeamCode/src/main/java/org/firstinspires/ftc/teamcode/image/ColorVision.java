@@ -6,13 +6,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-/**
- * Created by guinea on 10/5/17.
- * A nice demo class for using OpenCVPipeline. This one also demonstrates how to use OpenCV to threshold
- * for a certain color (blue), which is very common in robotics OpenCV applications.
- */
-
-public class ExampleBlueVision extends OpenCVPipeline {
+public class ColorVision extends OpenCVPipeline {
     private boolean showBlue = true;
     // To keep it such that we don't have to instantiate a new Mat every call to processFrame,
     // we declare the Mats up here and reuse them. This is easier on the garbage collector.

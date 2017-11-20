@@ -45,6 +45,8 @@ public class HardwarePushbotMecanum {
     public DcMotor rightFrontMotor = null;
     public DcMotor rightBackMotor = null;
 
+    public ColorSensor color;
+
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
@@ -55,6 +57,8 @@ public class HardwarePushbotMecanum {
         leftBackMotor = hwMap.dcMotor.get("leftBack");
         rightFrontMotor = hwMap.dcMotor.get("rightFront");
         rightBackMotor = hwMap.dcMotor.get("rightBack");
+
+        color = hwMap.colorSensor.get("jewelSensor");
         // Set Motor Direction
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);

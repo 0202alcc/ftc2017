@@ -52,7 +52,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="MecanumDriveTrig", group="Pushbot")
-//@Disabled
 public class MecanumDriveTrig extends OpMode {
 
     /* Declare OpMode members. */
