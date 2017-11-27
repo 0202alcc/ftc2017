@@ -34,7 +34,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 /**
  * This file provides basic Telop driving for a Pushbot robot.
@@ -58,7 +60,13 @@ public class MecanumDriveTrig extends OpMode {
     /* Declare OpMode members. */
     HardwarePushbotMecanum robot       = new HardwarePushbotMecanum();   // Use a Pushbot's hardware
     public ElapsedTime runtime = new ElapsedTime();
-
+    boolean foo = false;
+    double dump;
+    static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
+    static final double     WHEEL_DIAMETER_INCHES   = 0.8188976 ;     // For figuring circumference
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * Math.PI);
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -70,6 +78,8 @@ public class MecanumDriveTrig extends OpMode {
          */
         robot.init(hardwareMap);
         // Send telemetry message to signify robot waiting;
+        robot.rackAndPinion.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        telemetry.addData("Path0",  "Starting at  :", robot.rackAndPinion.getCurrentPosition());
         telemetry.addData("Say", "Hello and, again, welcome to the Aperture Science computer-aided enrichment center.");    //
     }
 
@@ -92,65 +102,121 @@ public class MecanumDriveTrig extends OpMode {
      */
     @Override
     public void loop() {
+        //Press this to release intake wheels
+        if(gamepad1.dpad_up || gamepad2.dpad_up){
+            robot.leftIntakeServo.setPosition(0.52);
+            robot.rightIntakeServo.setPosition(0.42);
+        }
+        if(gamepad2.left_bumper){
+            robot.leftIntakeServo.setPosition(0.50);
+            robot.rightIntakeServo.setPosition(0.40);
+        }
+        if(gamepad2.right_bumper){
+            robot.leftIntakeServo.setPosition(1.00);
+            robot.rightIntakeServo.setPosition(0.00);
+        }
+        if(gamepad1.dpad_down || gamepad2.dpad_down){
+            if(foo){
+                robot.leftIntakeMotor.setPower(-1);
+                robot.rightIntakeMotor.setPower(-1);
+            } else {
+                robot.leftIntakeMotor.setPower(0);
+                robot.rightIntakeMotor.setPower(0);
+            }
+            foo = !foo;
+        }
 
-//        double forwards;
-//        double backwards;
-//        double left;
-//        double right;
-//        // Whole robot moves foreward when left joystick moves up on the y-axis (note: The joystick goes negative when pushed forwards, so negate it)
-//        forwards = -gamepad1.left_stick_y; // 1
-//        robot.leftFrontMotor.setPower(forwards);
-//        robot.leftBackMotor.setPower(forwards);
-//        robot.rightFrontMotor.setPower(forwards);
-//        robot.rightBackMotor.setPower(forwards);
-//
-//        backwards = gamepad1.left_stick_y; // -1
-//        robot.leftFrontMotor.setPower(backwards);
-//        robot.leftBackMotor.setPower(backwards);
-//        robot.rightFrontMotor.setPower(backwards);
-//        robot.rightBackMotor.setPower(backwards);
-//
-//        left = gamepad1.left_stick_x; // 1?
-//        robot.leftFrontMotor.setPower(-left);
-//        robot.leftBackMotor.setPower(left);
-//        robot.rightFrontMotor.setPower(left);
-//        robot.rightBackMotor.setPower(-left);
-//
-//        right = -gamepad1.left_stick_x;
-//        robot.leftFrontMotor.setPower(right);
-//        robot.leftBackMotor.setPower(-right);
-//        robot.rightFrontMotor.setPower(-right);
-//        robot.rightBackMotor.setPower(right);
-//        telemetry.update();
-//
-//        double turn = gamepad1.right_stick_x; // right stick
-//        robot.leftFrontMotor.setPower(turn);
-//        robot.leftBackMotor.setPower(turn);
-//        robot.rightBackMotor.setPower(-turn);
-//        robot.rightBackMotor.setPower(-turn);
-        //Thank you reddit
-          double r = Math.hypot(gamepad1.left_stick_y, gamepad1.left_stick_x);
-          double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-          double rightX = -gamepad1.right_stick_x;
-            final double v1 = r * Math.cos(robotAngle) + rightX;
-            final double v2 = r * Math.sin(robotAngle) - rightX;
-            final double v3 = r * Math.sin(robotAngle) + rightX;
-            final double v4 = r * Math.cos(robotAngle) - rightX;
-            robot.leftFrontMotor.setPower(v1);
-            robot.rightFrontMotor.setPower(v2);
-            robot.leftBackMotor.setPower(v3);
-            robot.rightBackMotor.setPower(v4);
+        if (gamepad1.a || gamepad2.a){
+            robot.leftContinuous.setPosition(1);
+            robot.rightContinuous.setPosition(0);
+        } else if(gamepad1.x || gamepad2.x){
+            robot.leftContinuous.setPosition(0);
+            robot.rightContinuous.setPosition(1);
+        } else {
+            robot.leftContinuous.setPosition(0.5);
 
-        telemetry.addData("v1: ",v1);
-        telemetry.addData("v2: ",v2);
-        telemetry.addData("v3: ",v3);
-        telemetry.addData("v4: ",v4);
+            robot.rightContinuous.setPosition(0.5);
+        }
 
+        if (gamepad1.left_bumper){
+            encoderDrive(0.5, 6, 10);
+        }
+        if (gamepad1.right_bumper){
+            encoderDrive(0.5, -6, 10);
+        }
+        dump = gamepad1.right_trigger / 2;
+        if(gamepad1.left_trigger == 1){
+            robot.dump.setPosition(0.5);
+        }
+        robot.dump.setPosition(dump);
+        /*
+         * This is the Mecanum Drive part. The math is explained in the engineering notebook.
+         */
+        //Thank you reddit user u/2treecko
+        double y = -gamepad1.left_stick_y;
+        double x = gamepad1.left_stick_x;
+        // how much to amplify the power
+        double r = Math.hypot(y, x);
+        //calculates the angle of the joystick - 45 degrees
+        double robotAngle = Math.atan2(y, x) - Math.PI / 4;
+        // rotation
+        double rightX = -gamepad1.right_stick_x;
+        // equation for each of the wheels
+        final double v1 = r * Math.cos(robotAngle) + rightX;
+        final double v2 = r * Math.sin(robotAngle) - rightX;
+        final double v3 = r * Math.sin(robotAngle) + rightX;
+        final double v4 = r * Math.cos(robotAngle) - rightX;
+
+        robot.leftFrontMotor.setPower(v1);
+        robot.rightFrontMotor.setPower(v2);
+        robot.leftBackMotor.setPower(v3);
+        robot.rightBackMotor.setPower(v4);
+        telemetry.addData("dump servo: ", dump);
 
     }
 
     //stolen from the autonomous to automatically align with the white line
 
+    public void encoderDrive(double speed,
+                             double leftInches,
+                             double timeoutS) {
+        int newLeftTarget;
+
+        // Ensure that the opmode is still active
+
+            // Determine new target position, and pass to motor controller
+            newLeftTarget = robot.rackAndPinion.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            robot.rackAndPinion.setTargetPosition(newLeftTarget);
+
+            // Turn On RUN_TO_POSITION
+            robot.rackAndPinion.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            robot.rackAndPinion.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while ((runtime.seconds() < timeoutS) &&
+                    (robot.rackAndPinion.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1",  "Running to  :", newLeftTarget);
+                telemetry.addData("Path2",  "Running at  :",
+                        robot.rackAndPinion.getCurrentPosition());
+                telemetry.update();
+            }
+
+            // Turn off RUN_TO_POSITION
+            robot.rackAndPinion.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            //  sleep(250);   // optional pause after each move
+
+    }
 
 
     /*

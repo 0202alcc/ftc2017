@@ -44,33 +44,72 @@ public class HardwarePushbotMecanum {
     public DcMotor leftBackMotor  = null;
     public DcMotor rightFrontMotor = null;
     public DcMotor rightBackMotor = null;
+    public DcMotor leftIntakeMotor = null;
+    public DcMotor rightIntakeMotor = null;
 
+    public DcMotor rackAndPinion = null;
+
+    public Servo leftIntakeServo = null;
+    public Servo rightIntakeServo = null;
+
+    public Servo leftContinuous = null;
+    public Servo rightContinuous = null;
+
+    public Servo dump = null;
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
 
-        // Define and Initialize Motors and Sensors
+        // Define and Initialize Motors
         leftFrontMotor = hwMap.dcMotor.get("leftFront");
         leftBackMotor = hwMap.dcMotor.get("leftBack");
         rightFrontMotor = hwMap.dcMotor.get("rightFront");
         rightBackMotor = hwMap.dcMotor.get("rightBack");
+
+        leftIntakeMotor = hwMap.dcMotor.get("leftIntakeMotor");
+        rightIntakeMotor = hwMap.dcMotor.get("rightIntakeMotor");
+
+        rackAndPinion = hwMap.dcMotor.get("rackAndPinion");
+
+        // Define and Initialize Servos
+        leftIntakeServo = hwMap.servo.get("leftIntake");
+        rightIntakeServo = hwMap.servo.get("rightIntake");
+
+        leftContinuous = hwMap.servo.get("leftContinuous");
+        rightContinuous = hwMap.servo.get("rightContinuous");
+
+        dump = hwMap.servo.get("dump");
         // Set Motor Direction
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
         rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
+
+        leftIntakeMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightIntakeMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        rackAndPinion.setDirection(DcMotor.Direction.REVERSE);
         //Set all motor powers to zero
         leftFrontMotor.setPower(0);
         leftBackMotor.setPower(0);
         rightFrontMotor.setPower(0);
         rightBackMotor.setPower(0);
-        //Establish whether or not you're using encoders
-        leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        leftIntakeMotor.setPower(0);
+        rightIntakeMotor.setPower(0);
+
+        rackAndPinion.setPower(0);
+        //Establish whether or not you're using encoders
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        leftIntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightIntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        rackAndPinion.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     /***
      *
