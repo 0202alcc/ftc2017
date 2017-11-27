@@ -47,6 +47,9 @@ public class HardwarePushbotMecanum {
 
     public ColorSensor color;
 
+    public Servo lifter = null;
+    public Servo claw = null;
+
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
@@ -64,7 +67,7 @@ public class HardwarePushbotMecanum {
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
         rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
-        //Set all motor powers to zero
+        //Set all mof-gg-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------tor powers to zero
         leftFrontMotor.setPower(0);
         leftBackMotor.setPower(0);
         rightFrontMotor.setPower(0);
@@ -74,6 +77,9 @@ public class HardwarePushbotMecanum {
         leftBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        lifter = hwMap.servo.get("lifter");
+        claw =  hwMap.servo.get("claw");
 
     }
     /***
