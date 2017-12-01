@@ -44,8 +44,8 @@ public class HardwarePushbotMecanum {
     public DcMotor leftBackMotor  = null;
     public DcMotor rightFrontMotor = null;
     public DcMotor rightBackMotor = null;
-    public DcMotor leftIntakeMotor = null;
-    public DcMotor rightIntakeMotor = null;
+    public DcMotor leftOmni = null;
+    public DcMotor rightOmni = null;
 
     public DcMotor rackAndPinion = null;
 
@@ -67,8 +67,8 @@ public class HardwarePushbotMecanum {
         rightFrontMotor = hwMap.dcMotor.get("rightFront");
         rightBackMotor = hwMap.dcMotor.get("rightBack");
 
-        leftIntakeMotor = hwMap.dcMotor.get("leftIntakeMotor");
-        rightIntakeMotor = hwMap.dcMotor.get("rightIntakeMotor");
+        leftOmni = hwMap.dcMotor.get("leftOmni");
+        rightOmni = hwMap.dcMotor.get("rightOmni");
 
         rackAndPinion = hwMap.dcMotor.get("rackAndPinion");
 
@@ -81,23 +81,23 @@ public class HardwarePushbotMecanum {
 
         dump = hwMap.servo.get("dump");
         // Set Motor Direction
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        leftIntakeMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightIntakeMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftOmni.setDirection(DcMotor.Direction.FORWARD); //CHECK DIRECTION
+        rightOmni.setDirection(DcMotor.Direction.REVERSE); //CHECK DIRECTION
 
-        rackAndPinion.setDirection(DcMotor.Direction.REVERSE);
+        rackAndPinion.setDirection(DcMotor.Direction.REVERSE); //CHECK DIRECTION
         //Set all motor powers to zero
         leftFrontMotor.setPower(0);
         leftBackMotor.setPower(0);
         rightFrontMotor.setPower(0);
         rightBackMotor.setPower(0);
 
-        leftIntakeMotor.setPower(0);
-        rightIntakeMotor.setPower(0);
+        leftOmni.setPower(0);
+        rightOmni.setPower(0);
 
         rackAndPinion.setPower(0);
         //Establish whether or not you're using encoders
@@ -106,8 +106,8 @@ public class HardwarePushbotMecanum {
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        leftIntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightIntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftOmni.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightOmni.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         rackAndPinion.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }

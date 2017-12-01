@@ -80,7 +80,7 @@ public class MecanumTrigDriveAuto extends LinearOpMode {
     HardwarePushbotMecanum robot       = new HardwarePushbotMecanum();   // Use a Pushbot's hardware
     ModernRoboticsI2cGyro   gyro    = null;                    // Additional Gyro device
 
-    static final double     COUNTS_PER_MOTOR_REV    = 288 ;    // eg: TETRIX Motor Encoder
+    static final double     COUNTS_PER_MOTOR_REV    = 288 ;    // eg: REV Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -142,15 +142,16 @@ public class MecanumTrigDriveAuto extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
-        gyroDrive(DRIVE_SPEED, 48.0, 0.0);    // Drive FWD 48 inches
-        gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
+        gyroDrive(DRIVE_SPEED, 10.0, 0.0);    // Drive FWD 10 inches
+        gyroTurn( TURN_SPEED, -90);         // Turn  CCW to -90 Degrees
+        mecanumDrive((Math.PI), 10);
 
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
     // distance is east = positive value and west = negative value
-    public void mecanumDrive (double angle, double distance, double timeout){
+    public void mecanumDrive (double angle, double distance){
         int newv1v4Target;
         int newv2v3Target;
         int moveCounts;

@@ -38,20 +38,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-/**
- * This file provides basic Telop driving for a Pushbot robot.
- * The code is structured as an Iterative OpMode
- *
- * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
- * All device access is managed through the HardwarePushbot class.
- *
- * This particular OpMode executes a basic Tank Drive Teleop for a PushBot
- * It raises and lowers the claw using the Gampad Y and A buttons respectively.
- * It also opens and closes the claws slowly using the left and right Bumper buttons.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
+import org.opencv.core.Mat;
 
 @TeleOp(name="MecanumDriveTrig", group="Pushbot")
 //@Disabled
@@ -61,8 +48,11 @@ public class MecanumDriveTrig extends OpMode {
     HardwarePushbotMecanum robot       = new HardwarePushbotMecanum();   // Use a Pushbot's hardware
     public ElapsedTime runtime = new ElapsedTime();
     boolean foo = false;
-    double dump;
-    static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: TETRIX Motor Encoder
+    double dumpx;
+    double intakeValueLeft;
+    double intakeValueRight;
+    int liftCount = 0;
+    static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: Anymark Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 0.8188976 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -102,53 +92,29 @@ public class MecanumDriveTrig extends OpMode {
      */
     @Override
     public void loop() {
-        //Press this to release intake wheels
-        if(gamepad1.dpad_up || gamepad2.dpad_up){
-            robot.leftIntakeServo.setPosition(0.52);
-            robot.rightIntakeServo.setPosition(0.42);
-        }
-        if(gamepad2.left_bumper){
-            robot.leftIntakeServo.setPosition(0.50);
-            robot.rightIntakeServo.setPosition(0.40);
-        }
-        if(gamepad2.right_bumper){
-            robot.leftIntakeServo.setPosition(1.00);
-            robot.rightIntakeServo.setPosition(0.00);
-        }
-        if(gamepad1.dpad_down || gamepad2.dpad_down){
-            if(foo){
-                robot.leftIntakeMotor.setPower(-1);
-                robot.rightIntakeMotor.setPower(-1);
-            } else {
-                robot.leftIntakeMotor.setPower(0);
-                robot.rightIntakeMotor.setPower(0);
-            }
-            foo = !foo;
-        }
+        //gamepad2 uses the analog sticks to determine the power of each of the servos
+        intakeValueLeft = ((-gamepad2.left_stick_y) + 1) / 2;
+        robot.leftContinuous.setPosition(intakeValueLeft);
 
-        if (gamepad1.a || gamepad2.a){
-            robot.leftContinuous.setPosition(1);
-            robot.rightContinuous.setPosition(0);
-        } else if(gamepad1.x || gamepad2.x){
-            robot.leftContinuous.setPosition(0);
-            robot.rightContinuous.setPosition(1);
-        } else {
-            robot.leftContinuous.setPosition(0.5);
+        intakeValueRight = ((-gamepad2.right_stick_y) + 1) / 2;
+        robot.rightContinuous.setPosition(-intakeValueRight);
 
-            robot.rightContinuous.setPosition(0.5);
-        }
-
+        // left bumper lowers lift, right bumper lifts lift, right triger controls servo
         if (gamepad1.left_bumper){
-            encoderDrive(0.5, 6, 10);
+            encoderDrive(0.5, -6, 10);
+            liftCount -= 6;
         }
         if (gamepad1.right_bumper){
-            encoderDrive(0.5, -6, 10);
+            encoderDrive(0.5, 6, 10);
+            liftCount += 6;
         }
-        dump = gamepad1.right_trigger / 2;
-        if(gamepad1.left_trigger == 1){
-            robot.dump.setPosition(0.5);
+        dumpx = gamepad1.right_trigger;
+        if(dumpx < 1.0 && dumpx > 0){
+            robot.dump.setPosition(0.1); //Confirm Servo Position
         }
-        robot.dump.setPosition(dump);
+        while(dumpx == 1.0){
+            robot.dump.setPosition(1.0); //Confirm Servo Position
+        }
         /*
          * This is the Mecanum Drive part. The math is explained in the engineering notebook.
          */
@@ -171,7 +137,31 @@ public class MecanumDriveTrig extends OpMode {
         robot.rightFrontMotor.setPower(v2);
         robot.leftBackMotor.setPower(v3);
         robot.rightBackMotor.setPower(v4);
-        telemetry.addData("dump servo: ", dump);
+
+        //extra omni power
+            //Quad I
+        if(x > 0 && y > 0){
+            robot.leftOmni.setPower(v1);
+            robot.rightOmni.setPower(v1);
+        }
+            //Quad II
+        if(x < 0 && y > 0){
+            robot.leftOmni.setPower(v2);
+            robot.rightOmni.setPower(v2);
+        }
+            //Quad III
+        if(x < 0 && y < 0){
+            robot.leftOmni.setPower(v1);
+            robot.rightOmni.setPower(v1);
+        }
+            //Quad IV
+        if(x > 0 && y < 0){
+            robot.leftOmni.setPower(v2);
+            robot.rightOmni.setPower(v2);
+        }
+
+        telemetry.addData("dump servo: ", dumpx);
+        telemetry.addData("lift count inches: ", liftCount);
 
     }
 
@@ -212,7 +202,7 @@ public class MecanumDriveTrig extends OpMode {
             }
 
             // Turn off RUN_TO_POSITION
-            robot.rackAndPinion.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            robot.rackAndPinion.setMode(DcMotor.RunMode.RUN_USING_ENCODER);  IF THIS IS ENABLED THE RACK WILL IMMEDIATELY GO BACK DOWN
 
             //  sleep(250);   // optional pause after each move
 

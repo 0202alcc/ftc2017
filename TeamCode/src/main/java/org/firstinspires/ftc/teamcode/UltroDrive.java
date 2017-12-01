@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
  */
 
 @TeleOp(name="UltroDrive", group="Pushbot")
-//@Disabled
+@Disabled
 public class UltroDrive extends OpMode {
     double          intakeOffset  = 0.0 ;                  // Servo mid position
     final double    INTAKE_SPEED  = 0.02 ;
