@@ -73,8 +73,6 @@ public class HardwarePushbotMecanum {
         rackAndPinion = hwMap.dcMotor.get("rackAndPinion");
 
         // Define and Initialize Servos
-        leftIntakeServo = hwMap.servo.get("leftIntake");
-        rightIntakeServo = hwMap.servo.get("rightIntake");
 
         leftContinuous = hwMap.servo.get("leftContinuous");
         rightContinuous = hwMap.servo.get("rightContinuous");
@@ -86,10 +84,10 @@ public class HardwarePushbotMecanum {
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        leftOmni.setDirection(DcMotor.Direction.FORWARD); //CHECK DIRECTION
-        rightOmni.setDirection(DcMotor.Direction.REVERSE); //CHECK DIRECTION
+        leftOmni.setDirection(DcMotor.Direction.REVERSE); //CHECK DIRECTION
+        rightOmni.setDirection(DcMotor.Direction.FORWARD); //CHECK DIRECTION
 
-        rackAndPinion.setDirection(DcMotor.Direction.REVERSE); //CHECK DIRECTION
+        rackAndPinion.setDirection(DcMotor.Direction.FORWARD); //CHECK DIRECTION
         //Set all motor powers to zero
         leftFrontMotor.setPower(0);
         leftBackMotor.setPower(0);
@@ -101,10 +99,10 @@ public class HardwarePushbotMecanum {
 
         rackAndPinion.setPower(0);
         //Establish whether or not you're using encoders
-        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         leftOmni.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightOmni.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

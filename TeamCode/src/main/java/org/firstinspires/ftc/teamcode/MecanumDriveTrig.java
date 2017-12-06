@@ -49,10 +49,11 @@ public class MecanumDriveTrig extends OpMode {
     public ElapsedTime runtime = new ElapsedTime();
     boolean foo = false;
     double dumpx;
+    double dump2x;
     double intakeValueLeft;
     double intakeValueRight;
     int liftCount = 0;
-    static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: Anymark Motor Encoder
+    static final double     COUNTS_PER_MOTOR_REV    = 288 ;    // eg: REV Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 0.8188976 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -69,6 +70,7 @@ public class MecanumDriveTrig extends OpMode {
         robot.init(hardwareMap);
         // Send telemetry message to signify robot waiting;
         robot.rackAndPinion.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.dump.setPosition(0.29);
         telemetry.addData("Path0",  "Starting at  :", robot.rackAndPinion.getCurrentPosition());
         telemetry.addData("Say", "Hello and, again, welcome to the Aperture Science computer-aided enrichment center.");    //
     }
@@ -93,34 +95,35 @@ public class MecanumDriveTrig extends OpMode {
     @Override
     public void loop() {
         //gamepad2 uses the analog sticks to determine the power of each of the servos
-        intakeValueLeft = ((-gamepad2.left_stick_y) + 1) / 2;
+        intakeValueLeft = ((gamepad2.left_stick_y) + 1) / 2;
         robot.leftContinuous.setPosition(intakeValueLeft);
-
         intakeValueRight = ((-gamepad2.right_stick_y) + 1) / 2;
-        robot.rightContinuous.setPosition(-intakeValueRight);
+        robot.rightContinuous.setPosition(intakeValueRight);
 
         // left bumper lowers lift, right bumper lifts lift, right triger controls servo
         if (gamepad1.left_bumper){
-            encoderDrive(0.5, -6, 10);
+            encoderDrive(0.5, 6, 10);
             liftCount -= 6;
         }
         if (gamepad1.right_bumper){
-            encoderDrive(0.5, 6, 10);
+            encoderDrive(0.5, -6, 10);
             liftCount += 6;
         }
         dumpx = gamepad1.right_trigger;
-        if(dumpx < 1.0 && dumpx > 0){
-            robot.dump.setPosition(0.1); //Confirm Servo Position
-        }
-        while(dumpx == 1.0){
-            robot.dump.setPosition(1.0); //Confirm Servo Position
+        dump2x = gamepad2.right_trigger;
+        if((dumpx < 1.0 && dumpx > 0) || (dump2x > 0)){
+            robot.dump.setPosition(0.4); //Confirm Servo Position
+        } else if(dumpx == 1.0){
+            robot.dump.setPosition(0.8); //Confirm Servo Position
+        } else {
+            robot.dump.setPosition(0.29);
         }
         /*
          * This is the Mecanum Drive part. The math is explained in the engineering notebook.
          */
         //Thank you reddit user u/2treecko
-        double y = -gamepad1.left_stick_y;
-        double x = gamepad1.left_stick_x;
+        double y = gamepad1.left_stick_y;
+        double x = -gamepad1.left_stick_x;
         // how much to amplify the power
         double r = Math.hypot(y, x);
         //calculates the angle of the joystick - 45 degrees
@@ -140,24 +143,9 @@ public class MecanumDriveTrig extends OpMode {
 
         //extra omni power
             //Quad I
-        if(x > 0 && y > 0){
-            robot.leftOmni.setPower(v1);
-            robot.rightOmni.setPower(v1);
-        }
-            //Quad II
-        if(x < 0 && y > 0){
-            robot.leftOmni.setPower(v2);
-            robot.rightOmni.setPower(v2);
-        }
-            //Quad III
-        if(x < 0 && y < 0){
-            robot.leftOmni.setPower(v1);
-            robot.rightOmni.setPower(v1);
-        }
-            //Quad IV
-        if(x > 0 && y < 0){
-            robot.leftOmni.setPower(v2);
-            robot.rightOmni.setPower(v2);
+        if(x < 0.1 && x > -0.1){
+            robot.leftOmni.setPower(y);
+            robot.rightOmni.setPower(y);
         }
 
         telemetry.addData("dump servo: ", dumpx);
