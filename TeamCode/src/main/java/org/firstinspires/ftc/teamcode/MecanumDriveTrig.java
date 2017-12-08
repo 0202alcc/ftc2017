@@ -104,10 +104,10 @@ public class MecanumDriveTrig extends OpMode {
             encoderDrive(0.8, -5.5, 10);
             liftCount += 5;
         }
-        while (gamepad2.left_bumper){
+        if (gamepad2.a){
             robot.rackAndPinion.setPower(0.5);
         }
-        while (gamepad2.right_bumper){
+        while (gamepad2.y){
             robot.rackAndPinion.setPower(-0.5);
         }
 
