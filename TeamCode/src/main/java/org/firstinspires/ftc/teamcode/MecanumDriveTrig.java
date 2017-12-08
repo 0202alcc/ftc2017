@@ -103,13 +103,20 @@ public class MecanumDriveTrig extends OpMode {
 
         // left bumper lowers lift, right bumper lifts lift, right triger controls servo
         if (gamepad1.left_bumper){
-            encoderDrive(0.5, 5.5, 10);
+            encoderDrive(0.8, 5.5, 10);
             liftCount -= 5;
         }
         if (gamepad1.right_bumper){
-            encoderDrive(0.5, -5.5, 10);
+            encoderDrive(0.8, -5.5, 10);
             liftCount += 5;
         }
+        while (gamepad2.left_bumper){
+            robot.rackAndPinion.setPower(0.5);
+        }
+        while (gamepad2.right_bumper){
+            robot.rackAndPinion.setPower(-0.5);
+        }
+
         dumpx = gamepad1.right_trigger;
         dump2x = gamepad2.right_trigger;
         if((dumpx < 1.0 && dumpx > 0) || (dump2x > 0)){
