@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,13 +19,17 @@ public class RedSensor extends LinearOpMode {
     static final double     P_TURN_COEFF            = 0.1;
     static final double     HEADING_THRESHOLD       = 1 ;
     HardwarePushbotMecanum robot = new HardwarePushbotMecanum();
-    ColorSensor sensor = robot.sensor;
-    Servo colorservo = robot.colorservo;
-    ModernRoboticsI2cGyro gyro = robot.gyro;
+    ColorSensor sensor = null;
+    Servo colorservo = null;
+    ModernRoboticsI2cGyro gyro = null;
     @Override
     public void runOpMode(){
         robot.init(hardwareMap);
+        sensor = hardwareMap.colorSensor.get("color");
+        colorservo = hardwareMap.servo.get("colorservo");
+        gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         colorservo.setPosition(1);
+        sensor.enableLed(true);
         if(checkRed()){
             telemetry.addData("Sensing", "REd");
             gyroTurn(6, 0.5);
