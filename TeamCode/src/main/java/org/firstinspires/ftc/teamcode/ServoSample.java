@@ -45,7 +45,7 @@ public class ServoSample extends OpMode {
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
-    public void loop() {
+    public void loop() {/*
         if(gamepad1.y){
             robot.lifter.setPosition(1);
         }else if (gamepad1.x){
@@ -57,7 +57,7 @@ public class ServoSample extends OpMode {
         }
         telemetry.addData("Servo Lifter: ", robot.lifter.getPosition());
         telemetry.addData("Servo Claw ", robot.claw.getPosition());
-
+*/
     }
 
     //stolen from the autonomous to automatically align with the white line

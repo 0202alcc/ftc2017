@@ -16,7 +16,7 @@ public class jewelopmode extends OpMode {
     private JewelSensorManager manager;
     public void init() {
         robot.init(hardwareMap);
-        manager = new JewelSensorManager(robot.color);
+        //manager = new JewelSensorManager(robot);
 
     }
     public void loop(){
