@@ -28,16 +28,21 @@ public class RedSensor extends LinearOpMode {
     /*ColorSensor sensor = null;
     Servo colorservo = null;
     ModernRoboticsI2cGyro gyro = null;*/
+    //Sensor w/ Servo!
     ColorSensor sensor = robot.colorSensor;
     Servo colorservo = robot.colorservo;
     ModernRoboticsI2cGyro gyro = robot.gyro;
 
     //Motors
     DcMotor leftFront = robot.leftFrontMotor;
-    DcMotor leftBack = robot.leftBackMotor
+    DcMotor leftBack = robot.leftBackMotor;
     DcMotor rightFront = robot.rightFrontMotor;
     DcMotor rightBack = robot.rightBackMotor;
     ArrayList<DcMotor> motors = new ArrayList<DcMotor>();
+
+    Servo dump = robot.dump;
+    //Dumpers
+    DcMotor rackandpinion = robot.rackAndPinion;
     @Override
     public void runOpMode(){
         robot.init(hardwareMap);
@@ -61,6 +66,8 @@ public class RedSensor extends LinearOpMode {
         }
         colorservo.setPosition(0);
         gyroTurn(90, 0.75);
+        encoderStrafe(1, 12);
+        dumpGlyph();
 
     }
     public boolean checkRed(){
@@ -143,7 +150,7 @@ public class RedSensor extends LinearOpMode {
     public void encoderStrafe(int speed,  int inches){
         double     COUNTS_PER_MOTOR_REV    = 288;    // eg: REV Motor Encoder
         double     DRIVE_GEAR_REDUCTION    = 1.0;     // This is < 1.0 if geared UP
-        double     WHEEL_DIAMETER_INCHES   = 0.8188976;     // For figuring circumference
+        double     WHEEL_DIAMETER_INCHES   = 4;     // For figuring circumference
         double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
         for(int a = 0; a <= 4; a++){
             DcMotor motor = motors.get(a);
@@ -156,8 +163,10 @@ public class RedSensor extends LinearOpMode {
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rackAndPinion.setPower(Math.abs(speed));
         }
+    }
 
-
-
+    public void dumpGlyph(){
+        dump.setPosition(0.4);
+        //TODO other things finish
     }
 }
