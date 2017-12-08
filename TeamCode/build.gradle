@@ -11,8 +11,8 @@
 // Include common definitions from above.
 apply from: '../build.common.gradle'
 dependencies {
-    compile project(':endercv')
     compile project(':openCVLibrary320')
+    implementation project(':DogeCV')
 }
 
 
