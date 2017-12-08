@@ -50,6 +50,7 @@ public class MecanumDriveTrig extends OpMode {
     boolean foo = false;
     double dumpx;
     double dump2x;
+    double wombatBat;
     double intakeValueLeft;
     double intakeValueRight;
     int liftCount = 0;
@@ -102,12 +103,12 @@ public class MecanumDriveTrig extends OpMode {
 
         // left bumper lowers lift, right bumper lifts lift, right triger controls servo
         if (gamepad1.left_bumper){
-            encoderDrive(0.5, 6, 10);
-            liftCount -= 6;
+            encoderDrive(0.5, 5.5, 10);
+            liftCount -= 5;
         }
         if (gamepad1.right_bumper){
-            encoderDrive(0.5, -6, 10);
-            liftCount += 6;
+            encoderDrive(0.5, -5.5, 10);
+            liftCount += 5;
         }
         dumpx = gamepad1.right_trigger;
         dump2x = gamepad2.right_trigger;
@@ -118,6 +119,16 @@ public class MecanumDriveTrig extends OpMode {
         } else {
             robot.dump.setPosition(0.29);
         }
+
+        wombatBat = gamepad2.left_trigger;
+        if(wombatBat > 0 && wombatBat < 1){
+            robot.bat.setPosition(0.15);
+        } else if(wombatBat == 1){
+            robot.bat.setPosition(0);
+        } else {
+            robot.bat.setPosition(1.0);
+        }
+
         /*
          * This is the Mecanum Drive part. The math is explained in the engineering notebook.
          */
@@ -179,15 +190,6 @@ public class MecanumDriveTrig extends OpMode {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while ((runtime.seconds() < timeoutS) &&
-                    (robot.rackAndPinion.isBusy())) {
-
-                // Display it for the driver.
-                telemetry.addData("Path1",  "Running to  :", newLeftTarget);
-                telemetry.addData("Path2",  "Running at  :",
-                        robot.rackAndPinion.getCurrentPosition());
-                telemetry.update();
-            }
 
             // Turn off RUN_TO_POSITION
 //            robot.rackAndPinion.setMode(DcMotor.RunMode.RUN_USING_ENCODER);  IF THIS IS ENABLED THE RACK WILL IMMEDIATELY GO BACK DOWN

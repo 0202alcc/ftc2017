@@ -56,6 +56,8 @@ public class HardwarePushbotMecanum {
     public Servo rightContinuous = null;
 
     public Servo dump = null;
+
+    public Servo bat = null;
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
@@ -78,6 +80,8 @@ public class HardwarePushbotMecanum {
         rightContinuous = hwMap.servo.get("rightContinuous");
 
         dump = hwMap.servo.get("dump");
+
+        bat = hwMap.servo.get("bat");
         // Set Motor Direction
         leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
