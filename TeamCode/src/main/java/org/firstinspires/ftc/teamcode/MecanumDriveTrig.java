@@ -170,12 +170,7 @@ public class MecanumDriveTrig extends OpMode {
     public void encoderDrive(double speed,
                              double leftInches,
                              double timeoutS) {
-        int newLeftTarget;
-
-        // Ensure that the opmode is still active
-
-        // Determine new target position, and pass to motor controller
-        newLeftTarget = robot.rackAndPinion.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+        int newLeftTarget = robot.rackAndPinion.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
         robot.rackAndPinion.setTargetPosition(newLeftTarget);
 
         // Turn On RUN_TO_POSITION
