@@ -51,9 +51,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-
-@TeleOp(name="MecanumDrive", group="Pushbot")
 @Disabled
+@TeleOp(name="MecanumDrive", group="Pushbot")
 public class MecanumDrive extends OpMode {
 
     /* Declare OpMode members. */

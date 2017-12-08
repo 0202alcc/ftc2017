@@ -47,9 +47,11 @@ public class HardwarePushbot {
     public DcMotor intakeMotor = null;
     public DcMotor flyWheelMotor = null;
 
-    public Servo leftBeacon = null;
+    /*public Servo leftBeacon = null;
     public Servo rightBeacon = null;
-    public Servo limiter = null;
+    public Servo limiter = null;*/
+    public Servo lifter = null;
+    public Servo claw = null;
 
     public OpticalDistanceSensor odsSensorI;  // Hardware Device Object
     public OpticalDistanceSensor odsSensorII;
@@ -81,9 +83,11 @@ public class HardwarePushbot {
         odsSensorII = hwMap.opticalDistanceSensor.get("odsII");
         odsSensorIII = hwMap.opticalDistanceSensor.get("odsIII");
         odsSensorIV = hwMap.opticalDistanceSensor.get("odsIV");
-        leftBeacon = hwMap.servo.get("leftBeacon");
+        /*leftBeacon = hwMap.servo.get("leftBeacon");
         rightBeacon = hwMap.servo.get("rightBeacon");
-        limiter = hwMap.servo.get("limiter");
+        limiter = hwMap.servo.get("limiter");*/
+        lifter = hwMap.servo.get("lifter");
+        claw =  hwMap.servo.get("claw");
         gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyro");
         RANGE1 = hwMap.i2cDevice.get("range");
         color = hwMap.colorSensor.get("color");

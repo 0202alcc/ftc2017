@@ -1,23 +1,17 @@
 /*
 Copyright (c) 2016 Robert Atkinson
-
 All rights reserved.
-
 Redistribution and use in source and binary forms, with or without modification,
 are permitted (subject to the limitations in the disclaimer below) provided that
 the following conditions are met:
-
 Redistributions of source code must retain the above copyright notice, this list
 of conditions and the following disclaimer.
-
 Redistributions in binary form must reproduce the above copyright notice, this
 list of conditions and the following disclaimer in the documentation and/or
 other materials provided with the distribution.
-
 Neither the name of Robert Atkinson nor the names of his contributors may be used to
 endorse or promote products derived from this software without specific prior
 written permission.
-
 NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
 LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
@@ -160,7 +154,7 @@ public class MecanumDriveTrig extends OpMode {
         robot.rightBackMotor.setPower(v4);
 
         //extra omni power
-            //Quad I
+        //Quad I
         if(x < 0.1 && x > -0.1){
             robot.leftOmni.setPower(y);
             robot.rightOmni.setPower(y);
@@ -180,28 +174,28 @@ public class MecanumDriveTrig extends OpMode {
 
         // Ensure that the opmode is still active
 
-            // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.rackAndPinion.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            robot.rackAndPinion.setTargetPosition(newLeftTarget);
+        // Determine new target position, and pass to motor controller
+        newLeftTarget = robot.rackAndPinion.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+        robot.rackAndPinion.setTargetPosition(newLeftTarget);
 
-            // Turn On RUN_TO_POSITION
-            robot.rackAndPinion.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        // Turn On RUN_TO_POSITION
+        robot.rackAndPinion.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            // reset the timeout time and start motion.
-            runtime.reset();
-            robot.rackAndPinion.setPower(Math.abs(speed));
+        // reset the timeout time and start motion.
+        runtime.reset();
+        robot.rackAndPinion.setPower(Math.abs(speed));
 
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+        // keep looping while we are still active, and there is time left, and both motors are running.
+        // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+        // its target position, the motion will stop.  This is "safer" in the event that the robot will
+        // always end the motion as soon as possible.
+        // However, if you require that BOTH motors have finished their moves before the robot continues
+        // onto the next step, use (isBusy() || isBusy()) in the loop test.
 
-            // Turn off RUN_TO_POSITION
+        // Turn off RUN_TO_POSITION
 //            robot.rackAndPinion.setMode(DcMotor.RunMode.RUN_USING_ENCODER);  IF THIS IS ENABLED THE RACK WILL IMMEDIATELY GO BACK DOWN
 
-            //  sleep(250);   // optional pause after each move
+        //  sleep(250);   // optional pause after each move
 
     }
 
