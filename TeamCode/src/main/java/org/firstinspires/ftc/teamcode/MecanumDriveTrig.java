@@ -66,6 +66,11 @@ public class MecanumDriveTrig extends OpMode {
         // Send telemetry message to signify robot waiting;
         robot.rackAndPinion.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.dump.setPosition(0.29);
+        robot.leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.leftBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         telemetry.addData("Path0",  "Starting at  :", robot.rackAndPinion.getCurrentPosition());
         telemetry.addData("Say", "Hello and, again, welcome to the Aperture Science computer-aided enrichment center.");    //
     }

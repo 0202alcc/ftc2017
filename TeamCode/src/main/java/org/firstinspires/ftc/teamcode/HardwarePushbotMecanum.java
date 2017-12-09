@@ -54,8 +54,8 @@ public class HardwarePushbotMecanum {
     public Servo bat = null;
 
     public ColorSensor colorSensor = null;
-    public Servo colorservo = null;
-    public ModernRoboticsI2cGyro gyro = null;
+//    public Servo colorservo = null;
+//    public ModernRoboticsI2cGyro gyro = null;
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
@@ -76,9 +76,9 @@ public class HardwarePushbotMecanum {
 
         leftContinuous = hwMap.servo.get("leftContinuous");
         rightContinuous = hwMap.servo.get("rightContinuous");
-        colorservo = hwMap.servo.get("colorservo");
-        colorSensor = hwMap.colorSensor.get("color");
-        gyro = (ModernRoboticsI2cGyro) hwMap.gyroSensor.get("gyro");
+//        colorservo = hwMap.servo.get("colorservo");
+//        colorSensor = hwMap.colorSensor.get("color");
+//        gyro = (ModernRoboticsI2cGyro) hwMap.gyroSensor.get("gyro");
 
         dump = hwMap.servo.get("dump");
 
