@@ -27,12 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.HardwarePushbotMecanum;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
@@ -67,9 +69,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="CenterCrytoBlue", group="Pushbot")
+@Autonomous(name="CenterCrytoRedFar", group="Pushbot")
 //@Disabled
-public class CenterCryptoBlue extends LinearOpMode {
+public class CenterCryptoRedFar extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbotMecanum robot       = new HardwarePushbotMecanum();   // Use a Pushbot's hardware
@@ -79,7 +81,7 @@ public class CenterCryptoBlue extends LinearOpMode {
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * Math.PI);
+                                                      (WHEEL_DIAMETER_INCHES * Math.PI);
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
@@ -128,8 +130,6 @@ public class CenterCryptoBlue extends LinearOpMode {
         robot.bat.setPosition(1.0);
         robot.dump.setPosition(0.4);
         encoderDrive(DRIVE_SPEED,  30,  30, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        encoderDrive(DRIVE_SPEED,  20,  -20, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        encoderDrive(DRIVE_SPEED,  20,  20, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
         robot.dump.setPosition(0.8);
         encoderDrive(DRIVE_SPEED, -5, -5, 5);
         sleep(1000);     // pause for servos to move
