@@ -30,7 +30,6 @@ public class HardwarePushbotMecanum {
 
     /* Constructor */
     public HardwarePushbotMecanum(){
-
     }
 
     /* Public OpMode members. */

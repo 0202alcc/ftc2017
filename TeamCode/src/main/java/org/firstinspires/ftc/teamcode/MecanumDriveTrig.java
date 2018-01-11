@@ -65,7 +65,6 @@ public class MecanumDriveTrig extends OpMode {
         robot.init(hardwareMap);
         // Send telemetry message to signify robot waiting;
         robot.rackAndPinion.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.dump.setPosition(0.29);
         robot.leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.leftBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -87,6 +86,7 @@ public class MecanumDriveTrig extends OpMode {
      */
     @Override
     public void start() {
+        robot.dump.setPosition(0.33);
     }
 
     /*
@@ -132,7 +132,7 @@ public class MecanumDriveTrig extends OpMode {
         } else if(wombatBat == 1){
             robot.bat.setPosition(0);
         } else {
-            robot.bat.setPosition(1.0);
+            robot.bat.setPosition(0.8);
         }
 
         /*
