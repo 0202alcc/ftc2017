@@ -1,17 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.I2cAddr;
-import com.qualcomm.robotcore.hardware.I2cDevice;
-import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
-import com.qualcomm.robotcore.hardware.I2cDeviceSynchImpl;
-import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 /**
  * This is NOT an opmode.
@@ -36,7 +30,6 @@ public class HardwarePushbotMecanum {
 
     /* Constructor */
     public HardwarePushbotMecanum(){
-
     }
 
     /* Public OpMode members. */
@@ -60,8 +53,8 @@ public class HardwarePushbotMecanum {
     public Servo bat = null;
 
     public ColorSensor colorSensor = null;
-    public Servo colorservo = null;
-    public ModernRoboticsI2cGyro gyro = null;
+//    public Servo colorservo = null;
+//    public ModernRoboticsI2cGyro gyro = null;
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
@@ -82,13 +75,20 @@ public class HardwarePushbotMecanum {
 
         leftContinuous = hwMap.servo.get("leftContinuous");
         rightContinuous = hwMap.servo.get("rightContinuous");
-        colorservo = hwMap.servo.get("colorservo");
-        colorSensor = hwMap.colorSensor.get("color");
-        gyro = (ModernRoboticsI2cGyro) hwMap.gyroSensor.get("gyro");
+//        colorservo = hwMap.servo.get("colorservo");
+//        colorSensor = hwMap.colorSensor.get("color");
+//        gyro = (ModernRoboticsI2cGyro) hwMap.gyroSensor.get("gyro");
 
         dump = hwMap.servo.get("dump");
 
         bat = hwMap.servo.get("bat");
+
+//        colorServo = hwMap.servo.get("colorServo");
+
+        // Define and Initialize sensors
+//        gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyro");
+//        color = hwMap.colorSensor.get("color");
+
         // Set Motor Direction
         leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         leftBackMotor.setDirection(DcMotor.Direction.FORWARD);

@@ -36,15 +36,14 @@ import org.opencv.core.Mat;
 
 @TeleOp(name="MecanumDriveTrig", group="Pushbot")
 //@Disabled
-public class MecanumDriveTrig extends OpMode {
+public class WombatTwo extends OpMode {
 
     /* Declare OpMode members. */
-    HardwarePushbotMecanum robot       = new HardwarePushbotMecanum();   // Use a Pushbot's hardware
+    HardwareWombatTwo robot       = new HardwareWombatTwo();   // Use a Pushbot's hardware
     public ElapsedTime runtime = new ElapsedTime();
     boolean foo = false;
     double dumpx;
     double dump2x;
-    double wombatBat;
     double intakeValueLeft;
     double intakeValueRight;
     int liftCount = 0;
@@ -94,11 +93,11 @@ public class MecanumDriveTrig extends OpMode {
      */
     @Override
     public void loop() {
-        //gamepad2 uses the analog sticks to determine the power of each of the servos
-        intakeValueLeft = ((gamepad2.left_stick_y) + 1) / 2;
-        robot.leftContinuous.setPosition(intakeValueLeft);
-        intakeValueRight = ((-gamepad2.right_stick_y) + 1) / 2;
-        robot.rightContinuous.setPosition(intakeValueRight);
+        //gamepad2 uses the analog sticks to determine the power of the intake wheels
+        intakeValueLeft = -gamepad2.left_stick_y;
+        intakeValueRight = -gamepad2.right_stick_x;
+        robot.leftIntake.setPower(intakeValueLeft);
+        robot.rightIntake.setPower(intakeValueRight);
 
         // left bumper lowers lift, right bumper lifts lift, right triger controls servo
         if (gamepad1.left_bumper){
@@ -126,15 +125,6 @@ public class MecanumDriveTrig extends OpMode {
             robot.dump.setPosition(0.29);
         }
 
-        wombatBat = gamepad2.left_trigger;
-        if(wombatBat > 0 && wombatBat < 1){
-            robot.bat.setPosition(0.15);
-        } else if(wombatBat == 1){
-            robot.bat.setPosition(0);
-        } else {
-            robot.bat.setPosition(0.8);
-        }
-
         /*
          * This is the Mecanum Drive part. The math is explained in the engineering notebook.
          */
@@ -158,12 +148,7 @@ public class MecanumDriveTrig extends OpMode {
         robot.leftBackMotor.setPower(v3);
         robot.rightBackMotor.setPower(v4);
 
-        //extra omni power
-        //Quad I
-        if(x < 0.1 && x > -0.1){
-            robot.leftOmni.setPower(y);
-            robot.rightOmni.setPower(y);
-        }
+
 
         telemetry.addData("dump servo: ", dumpx);
         telemetry.addData("lift count inches: ", liftCount);
