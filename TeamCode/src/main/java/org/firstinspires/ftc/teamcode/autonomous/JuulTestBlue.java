@@ -29,11 +29,15 @@
 
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import java.util.logging.Logger;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.vuforia.Vuforia;
 
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.HardwarePushbotMecanum;
 
 /**
@@ -92,6 +96,7 @@ public class JuulTestBlue extends LinearOpMode {
     static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
     static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
 
+    VuforiaEncoder ve;
 
     @Override
     public void runOpMode() {
@@ -121,13 +126,23 @@ public class JuulTestBlue extends LinearOpMode {
                 robot.rightFrontMotor.getCurrentPosition());
         telemetry.update();
         robot.bat.setPosition(0.0);
-
+        //Vuforia stuff
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        ve = new VuforiaEncoder(hardwareMap, parameters);
+        ve.enable();
+        Thread  driveThread = new DriveThread();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        ve.activate();
+
         robot.bat.setPosition(1.0);
         robot.dump.setPosition(0.4);
         robot.juul.setPosition(1);
+        driveThread.start();
+        telemetry.addData("Easy","Easy");
         sleep(1000);
+
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         if(robot.colorSensor.blue() > robot.colorSensor.red()){
@@ -231,6 +246,22 @@ public class JuulTestBlue extends LinearOpMode {
             robot.leftBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             //  sleep(250);   // optional pause after each move
+        }
+    }
+    private class DriveThread extends Thread {
+        public DriveThread() {
+            this.setName("DriveThread");
+        }
+        @Override
+        public void run() {
+            try {
+                while(opModeIsActive()) {
+                    ve.track(telemetry);
+                }
+            }
+            catch (Exception e) {
+            }
+
         }
     }
 }

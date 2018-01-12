@@ -83,8 +83,8 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
      */
     VuforiaLocalizer vuforia;
 
-    @Override public void runOpMode() {
-
+    @Override
+    public void runOpMode() {
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
          * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
@@ -134,7 +134,6 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
         relicTrackables.activate();
 
         while (opModeIsActive()) {
-
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
              * {@link RelicRecoveryVuMark} is an enum which can have the following values:
