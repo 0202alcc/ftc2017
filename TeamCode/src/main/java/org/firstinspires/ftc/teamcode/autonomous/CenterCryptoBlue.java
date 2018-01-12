@@ -129,6 +129,23 @@ public class CenterCryptoBlue extends LinearOpMode {
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         robot.bat.setPosition(1.0);
         robot.dump.setPosition(0.4);
+        robot.juul.setPosition(1);
+        sleep(1000);
+        // Step through each leg of the path,
+        // Note: Reverse movement is obtained by setting a negative distance (not speed)
+        if(robot.colorSensor.blue() > robot.colorSensor.red()){
+            //DRIVE BACK THEN FORWARD
+            encoderDrive(DRIVE_SPEED, 5, 5, 5);
+            sleep(500);
+            robot.juul.setPosition(0);
+            encoderDrive(DRIVE_SPEED, -5, -5, 5);
+        } else {
+            encoderDrive(DRIVE_SPEED, -5, -5, 5);
+            sleep(500);
+            robot.juul.setPosition(0);
+            encoderDrive(DRIVE_SPEED, 5, 5, 5);
+        }
+
         encoderDrive(DRIVE_SPEED,  30,  30, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
         encoderDrive(DRIVE_SPEED,  20,  -20, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
         encoderDrive(DRIVE_SPEED,  20,  20, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout

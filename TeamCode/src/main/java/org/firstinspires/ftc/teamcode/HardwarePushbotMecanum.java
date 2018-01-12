@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -49,10 +50,11 @@ public class HardwarePushbotMecanum {
     public Servo rightContinuous = null;
 
     public Servo dump = null;
-
+    public Servo juul = null;
     public Servo bat = null;
 
     public ColorSensor colorSensor = null;
+    public DistanceSensor distanceSensor = null;
 //    public Servo colorservo = null;
 //    public ModernRoboticsI2cGyro gyro = null;
     /* Initialize standard Hardware interfaces */
@@ -75,6 +77,7 @@ public class HardwarePushbotMecanum {
 
         leftContinuous = hwMap.servo.get("leftContinuous");
         rightContinuous = hwMap.servo.get("rightContinuous");
+        juul = hwMap.servo.get("juul");
 //        colorservo = hwMap.servo.get("colorservo");
 //        colorSensor = hwMap.colorSensor.get("color");
 //        gyro = (ModernRoboticsI2cGyro) hwMap.gyroSensor.get("gyro");
@@ -82,7 +85,8 @@ public class HardwarePushbotMecanum {
         dump = hwMap.servo.get("dump");
 
         bat = hwMap.servo.get("bat");
-
+        colorSensor = hwMap.get(ColorSensor.class, "sensor_color_distance");
+        distanceSensor = hwMap.get(DistanceSensor.class, "sensor_color_distance");
 //        colorServo = hwMap.servo.get("colorServo");
 
         // Define and Initialize sensors

@@ -87,6 +87,7 @@ public class MecanumDriveTrig extends OpMode {
     @Override
     public void start() {
         robot.dump.setPosition(0.33);
+        robot.juul.setPosition(0);
     }
 
     /*
@@ -126,7 +127,7 @@ public class MecanumDriveTrig extends OpMode {
             robot.dump.setPosition(0.29);
         }
 
-        wombatBat = gamepad2.left_trigger;
+        wombatBat = gamepad1.left_trigger;
         if(wombatBat > 0 && wombatBat < 1){
             robot.bat.setPosition(0.15);
         } else if(wombatBat == 1){

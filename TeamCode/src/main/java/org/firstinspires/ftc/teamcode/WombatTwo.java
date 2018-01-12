@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.opencv.core.Mat;
 
-@TeleOp(name="MecanumDriveTrig", group="Pushbot")
+@TeleOp(name="WombatTwo", group="Pushbot")
 //@Disabled
 public class WombatTwo extends OpMode {
 
