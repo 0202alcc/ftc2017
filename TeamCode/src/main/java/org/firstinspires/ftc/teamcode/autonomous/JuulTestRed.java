@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.HardwarePushbotMecanum;
+import org.firstinspires.ftc.teamcode.util.VuforiaEncoder;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.

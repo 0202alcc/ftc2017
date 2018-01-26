@@ -1,15 +1,15 @@
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.util.VuforiaEncoder;
 
 /**
  * Created by gescalona on 1/12/18.
  */
-@Autonomous(name="Autonomous Test OP mode", group="Pushbot")
+@Autonomous(name="Autonomous Test for IMU", group="Pushbot")
 public class autotestmode extends LinearOpMode {
     @Override
     public void runOpMode(){
