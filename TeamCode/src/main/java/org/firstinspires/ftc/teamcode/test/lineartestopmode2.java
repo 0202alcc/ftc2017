@@ -71,14 +71,28 @@ public class lineartestopmode2 extends OpMode {
         List<DcMotor> right = new ArrayList<DcMotor>();
         right.add(leftBackMotor);
         right.add(leftFrontMotor);
+        if(angle > 180) {
+            leftspeed = 1;
+            rightspeed =-1;
+        }else{
+            leftspeed = -1;
+            rightspeed = 1;
+        }
         while(!(targetangle + 5 >=  Integer.parseInt(angler.getAngle()))) {
             for (DcMotor l : left) {
-                l.setPower(speed);
+                l.setPower(leftspeed);
             }
             for (DcMotor r : right) {
-                r.setPower(-speed);
+                r.setPower(rightspeed);
             }
         }
+        for (DcMotor l : left) {
+            l.setPower(0);
+        }
+        for (DcMotor r : right) {
+            r.setPower(0);
+        }
+
     }
     public int fixAngle(int angle){
         if(angle < 0){
