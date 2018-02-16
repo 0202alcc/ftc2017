@@ -47,7 +47,7 @@ public class Angler {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
     }
     public String getAngle(){
-        angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return formatAngle(angles.angleUnit, angles.firstAngle);
     }
     public void composeTelemetry(){

@@ -49,7 +49,7 @@ public class lineartestopmode2 extends OpMode {
         rightBackMotor = hardwareMap.dcMotor.get("rightBack");
     }
     @Override
-    public void loop(){
+    public void loop() {
         telemetry.addData("TEST WITH RADIAN:", angler.getAngle());
     }
     /*public void gyroTurn (  double speed, double angle) {

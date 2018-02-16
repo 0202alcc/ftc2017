@@ -66,26 +66,7 @@ public class HardwareTest {
     public DcMotor leftBackMotor  = null;
     public DcMotor rightFrontMotor = null;
     public DcMotor rightBackMotor = null;
-    public DcMotor leftOmni = null;
-    public DcMotor rightOmni = null;
 
-    public DcMotor rackAndPinion = null;
-
-    public Servo leftIntakeServo = null;
-    public Servo rightIntakeServo = null;
-
-    public Servo leftContinuous = null;
-    public Servo rightContinuous = null;
-
-    public Servo dump = null;
-    public Servo juul = null;
-    public Servo bat = null;
-
-    public ColorSensor colorSensor = null;
-    public DistanceSensor distanceSensor = null;
-    //    public Servo colorservo = null;
-//    public ModernRoboticsI2cGyro gyro = null;
-    /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
@@ -96,61 +77,23 @@ public class HardwareTest {
         rightFrontMotor = hwMap.dcMotor.get("rightFront");
         rightBackMotor = hwMap.dcMotor.get("rightBack");
 
-        leftOmni = hwMap.dcMotor.get("leftOmni");
-        rightOmni = hwMap.dcMotor.get("rightOmni");
 
-        rackAndPinion = hwMap.dcMotor.get("rackAndPinion");
-
-        // Define and Initialize Servos
-
-        leftContinuous = hwMap.servo.get("leftContinuous");
-        rightContinuous = hwMap.servo.get("rightContinuous");
-        juul = hwMap.servo.get("juul");
-//        colorservo = hwMap.servo.get("colorservo");
-//        colorSensor = hwMap.colorSensor.get("color");
-//        gyro = (ModernRoboticsI2cGyro) hwMap.gyroSensor.get("gyro");
-
-        dump = hwMap.servo.get("dump");
-
-        bat = hwMap.servo.get("bat");
-        colorSensor = hwMap.get(ColorSensor.class, "sensor_color_distance");
-        distanceSensor = hwMap.get(DistanceSensor.class, "sensor_color_distance");
-//        colorServo = hwMap.servo.get("colorServo");
-
-        // Define and Initialize sensors
-//        gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyro");
-//        color = hwMap.colorSensor.get("color");
-
-        // Set Motor Direction
         leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        leftOmni.setDirection(DcMotor.Direction.REVERSE); //CHECK DIRECTION
-        rightOmni.setDirection(DcMotor.Direction.FORWARD); //CHECK DIRECTION
-
-        rackAndPinion.setDirection(DcMotor.Direction.FORWARD); //CHECK DIRECTION
-        //Set all motor powers to zero
         leftFrontMotor.setPower(0);
         leftBackMotor.setPower(0);
         rightFrontMotor.setPower(0);
         rightBackMotor.setPower(0);
 
-        leftOmni.setPower(0);
-        rightOmni.setPower(0);
-
-        rackAndPinion.setPower(0);
         //Establish whether or not you're using encoders
         leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        leftOmni.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightOmni.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        rackAndPinion.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     /***
      *
