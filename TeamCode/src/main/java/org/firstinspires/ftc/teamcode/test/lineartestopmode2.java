@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -19,6 +21,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.HardwarePushbotMecanum;
 import org.firstinspires.ftc.teamcode.util.Angler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -28,12 +32,21 @@ import java.util.Locale;
 public class lineartestopmode2 extends OpMode {
     private HardwareTest robot = new HardwareTest();
     private Angler angler;
+    private double HEADING_THRESHOLD = 1;
+    private DcMotor leftFrontMotor;
+    private DcMotor leftBackMotor;
+    private DcMotor rightFrontMotor;
+    private DcMotor rightBackMotor;
     @Override
     public void init(){
         robot.init(hardwareMap);
         angler = new Angler(hardwareMap,telemetry);
         angler.start();
         angler.composeTelemetry();
+        leftFrontMotor = hardwareMap.dcMotor.get("leftFront");
+        leftBackMotor = hardwareMap.dcMotor.get("leftBack");
+        rightFrontMotor = hardwareMap.dcMotor.get("rightFront");
+        rightBackMotor = hardwareMap.dcMotor.get("rightBack");
     }
     @Override
     public void loop(){
@@ -47,7 +60,74 @@ public class lineartestopmode2 extends OpMode {
             telemetry.update();
         }
     }*/
-    public void makeTurn(){
-        int angle = Integer.parseInt(angler.getAngle());
+    public void makeTurn(double speed, double angle){
+        int rangle = Integer.parseInt(angler.getAngle());
+        int good = fixAngle(rangle);
+        int targetangle = good + rangle;
+        double leftspeed,rightspeed;
+        List<DcMotor> left = new ArrayList<DcMotor>();
+        left.add(leftBackMotor);
+        left.add(leftFrontMotor);
+        List<DcMotor> right = new ArrayList<DcMotor>();
+        right.add(leftBackMotor);
+        right.add(leftFrontMotor);
+        while(!(targetangle + 5 >=  Integer.parseInt(angler.getAngle()))) {
+            for (DcMotor l : left) {
+                l.setPower(speed);
+            }
+            for (DcMotor r : right) {
+                r.setPower(-speed);
+            }
+        }
     }
+    public int fixAngle(int angle){
+        if(angle < 0){
+            angle = angle + 360;
+        }
+        return angle; // for now
+    }
+    /*public double getError(double targetAngle) {
+
+        double robotError;
+
+        // calculate error in -179 to +180 range  (
+        robotError = targetAngle - gyro.getIntegratedZValue();
+        while (robotError > 180)  robotError -= 360;
+        while (robotError <= -180) robotError += 360;
+        return robotError;
+    }*/
+    /*boolean onHeading(double speed, double angle, double PCoeff) {
+        double   error ;
+        double   steer ;
+        boolean  onTarget = false ;
+        double leftSpeed;
+        double rightSpeed;
+
+        // determine turn power based on +/- error
+        error = getError(angle);
+
+        if (Math.abs(error) <= HEADING_THRESHOLD) {
+            steer = 0.0;
+            leftSpeed  = 0.0;
+            rightSpeed = 0.0;
+            onTarget = true;
+        }
+        else {
+            steer = getSteer(error, PCoeff);
+            rightSpeed  = speed * steer;
+            leftSpeed   = -rightSpeed;
+        }
+
+        // Send desired speeds to motors.
+        robot.leftDrive.setPower(leftSpeed);
+        robot.rightDrive.setPower(rightSpeed);
+
+        // Display it for the driver.
+        telemetry.addData("Target", "%5.2f", angle);
+        telemetry.addData("Err/St", "%5.2f/%5.2f", error, steer);
+        telemetry.addData("Speed.", "%5.2f:%5.2f", leftSpeed, rightSpeed);
+
+        return onTarget;
+    }*/
+
 }
