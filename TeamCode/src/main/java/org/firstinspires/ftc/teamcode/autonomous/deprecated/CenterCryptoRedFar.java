@@ -27,16 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.autonomous.deprecated;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.HardwarePushbotMecanum;
-import org.firstinspires.ftc.teamcode.util.VuforiaEncoder;
+import org.firstinspires.ftc.teamcode.map.HardwarePushbotMecanum;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
@@ -71,9 +69,9 @@ import org.firstinspires.ftc.teamcode.util.VuforiaEncoder;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Red", group="Pushbot")
+@Autonomous(name="CenterCrytoRedFar", group="Pushbot")
 //@Disabled
-public class JuulTestRed extends LinearOpMode {
+public class CenterCryptoRedFar extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbotMecanum robot       = new HardwarePushbotMecanum();   // Use a Pushbot's hardware
@@ -83,7 +81,7 @@ public class JuulTestRed extends LinearOpMode {
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * Math.PI);
+                                                      (WHEEL_DIAMETER_INCHES * Math.PI);
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
@@ -94,7 +92,7 @@ public class JuulTestRed extends LinearOpMode {
     static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
     static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
 
-    VuforiaEncoder ve;
+
     @Override
     public void runOpMode() {
         /*
@@ -124,35 +122,14 @@ public class JuulTestRed extends LinearOpMode {
         telemetry.update();
         robot.bat.setPosition(0.0);
 
-        //Vuforia stuff
-        ve = null;
-        ve.enable();
-        Thread  driveThread = new DriveThread();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        ve.activate();
-        driveThread.start();
-        robot.bat.setPosition(1.0);
-        robot.dump.setPosition(0.4);
-        robot.juul.setPosition(1);
-        sleep(1000);
+
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        if(robot.colorSensor.red() > robot.colorSensor.blue()){
-            //DRIVE BACK THEN FORWARD
-            encoderDrive(DRIVE_SPEED, 5, 5, 5);
-            sleep(500);
-            robot.juul.setPosition(0);
-            encoderDrive(DRIVE_SPEED, -5, -5, 5);
-        } else {
-            encoderDrive(DRIVE_SPEED, -5, -5, 5);
-            sleep(500);
-            robot.juul.setPosition(0);
-            encoderDrive(DRIVE_SPEED, 20, 20, 5);
-        }
+        robot.bat.setPosition(1.0);
+        robot.dump.setPosition(0.4);
         encoderDrive(DRIVE_SPEED,  30,  30, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        encoderDrive(DRIVE_SPEED,  -20,  20, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        encoderDrive(DRIVE_SPEED,  20,  20, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
         robot.dump.setPosition(0.8);
         encoderDrive(DRIVE_SPEED, -5, -5, 5);
         sleep(1000);     // pause for servos to move
@@ -161,18 +138,6 @@ public class JuulTestRed extends LinearOpMode {
         encoderDrive(DRIVE_SPEED, -5, -5, 5.0);
         telemetry.addData("Path", "Complete");
         telemetry.update();
-
-//        encoderDrive(DRIVE_SPEED,  30,  30, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-//        encoderDrive(DRIVE_SPEED,  20,  -20, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-//        encoderDrive(DRIVE_SPEED,  20,  20, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-//        robot.dump.setPosition(0.8);
-//        encoderDrive(DRIVE_SPEED, -5, -5, 5);
-//        sleep(1000);     // pause for servos to move
-//        robot.dump.setPosition(0.29);
-//        encoderDrive(DRIVE_SPEED, 10, 10, 5.0);
-//        encoderDrive(DRIVE_SPEED, -5, -5, 5.0);
-//        telemetry.addData("Path", "Complete");
-//        telemetry.update();
     }
     // distance is east = positive value and west = negative value
     public void encoderDrive(double speed,
@@ -239,21 +204,6 @@ public class JuulTestRed extends LinearOpMode {
             robot.leftBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             //  sleep(250);   // optional pause after each move
-        }
-    }
-    private class DriveThread extends Thread {
-
-        public DriveThread() {
-            this.setName("DriveThread");
-        }
-        @Override
-        public void run() {
-            try {
-                ve.track(telemetry);
-            }
-            catch (Exception e) {
-            }
-
         }
     }
 }

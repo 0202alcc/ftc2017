@@ -27,14 +27,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.autonomous.deprecated;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.HardwarePushbotMecanum;
+import org.firstinspires.ftc.teamcode.map.HardwarePushbotMecanum;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
@@ -69,9 +73,9 @@ import org.firstinspires.ftc.teamcode.HardwarePushbotMecanum;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="CenterCrytoRedFar", group="Pushbot")
+@Autonomous(name="CenterCrytoRed", group="Pushbot")
 //@Disabled
-public class CenterCryptoRedFar extends LinearOpMode {
+public class CenterCryptoRed extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbotMecanum robot       = new HardwarePushbotMecanum();   // Use a Pushbot's hardware
@@ -91,6 +95,21 @@ public class CenterCryptoRedFar extends LinearOpMode {
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
     static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
+
+    // hsvValues is an array that will hold the hue, saturation, and value information.
+    float hsvValues[] = {0F, 0F, 0F};
+
+    // values is a reference to the hsvValues array.
+    final float values[] = hsvValues;
+
+    // sometimes it helps to multiply the raw RGB values with a scale factor
+    // to amplify/attentuate the measured values.
+    final double SCALE_FACTOR = 255;
+
+    // get a reference to the RelativeLayout so we can change the background
+    // color of the Robot Controller app to match the hue detected by the RGB sensor.
+    int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+    final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
 
     @Override
@@ -115,6 +134,11 @@ public class CenterCryptoRedFar extends LinearOpMode {
         robot.leftBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        Color.RGBToHSV((int) (robot.colorSensor.red() * SCALE_FACTOR),
+                (int) (robot.colorSensor.green() * SCALE_FACTOR),
+                (int) (robot.colorSensor.blue() * SCALE_FACTOR),
+                hsvValues);
+
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
                 robot.leftFrontMotor.getCurrentPosition(),
@@ -129,7 +153,26 @@ public class CenterCryptoRedFar extends LinearOpMode {
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         robot.bat.setPosition(1.0);
         robot.dump.setPosition(0.4);
+        robot.juul.setPosition(1);
+        sleep(1000);
+        // Step through each leg of the path,
+        // Note: Reverse movement is obtained by setting a negative distance (not speed)
+        if(robot.colorSensor.red() > robot.colorSensor.blue()){
+            //DRIVE BACK THEN FORWARD
+            encoderDrive(DRIVE_SPEED, 5, 5, 5);
+            sleep(500);
+            robot.juul.setPosition(0);
+            encoderDrive(DRIVE_SPEED, -5, -5, 5);
+        } else {
+            encoderDrive(DRIVE_SPEED, -5, -5, 5);
+            sleep(500);
+            robot.juul.setPosition(0);
+            encoderDrive(DRIVE_SPEED, 5, 5, 5);
+        }
+        robot.juul.setPosition(0); //CHECK*****************
         encoderDrive(DRIVE_SPEED,  30,  30, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  -20,  20, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  20,  20, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
         robot.dump.setPosition(0.8);
         encoderDrive(DRIVE_SPEED, -5, -5, 5);
         sleep(1000);     // pause for servos to move
