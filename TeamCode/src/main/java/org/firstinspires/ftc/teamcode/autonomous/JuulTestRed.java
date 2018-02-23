@@ -125,9 +125,7 @@ public class JuulTestRed extends LinearOpMode {
         robot.bat.setPosition(0.0);
 
         //Vuforia stuff
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        ve = new VuforiaEncoder(hardwareMap, parameters);
+        ve = null;
         ve.enable();
         Thread  driveThread = new DriveThread();
         // Wait for the game to start (driver presses PLAY)

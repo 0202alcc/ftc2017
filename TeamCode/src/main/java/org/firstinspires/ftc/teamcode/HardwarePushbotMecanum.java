@@ -85,8 +85,7 @@ public class HardwarePushbotMecanum {
         dump = hwMap.servo.get("dump");
 
         bat = hwMap.servo.get("bat");
-        colorSensor = hwMap.get(ColorSensor.class, "sensor_color_distance");
-        distanceSensor = hwMap.get(DistanceSensor.class, "sensor_color_distance");
+
 //        colorServo = hwMap.servo.get("colorServo");
 
         // Define and Initialize sensors

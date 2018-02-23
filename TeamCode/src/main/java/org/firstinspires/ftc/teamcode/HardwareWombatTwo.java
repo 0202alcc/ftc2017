@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -39,8 +40,12 @@ public class HardwareWombatTwo {
     //Juul Arm
     public Servo juul = null;
 
+    //Bat
+    public Servo bat = null;
+
     //Sensors
-    public ColorSensor color = null;
+    public ColorSensor colorSensor = null;
+    public DistanceSensor distanceSensor = null;
 
     public void init(HardwareMap ahwMap){
         //For referencing
@@ -65,6 +70,11 @@ public class HardwareWombatTwo {
         //Juul Arm
         juul = hwMap.servo.get("juul");
 
+        //Bat
+        bat = hwMap.servo.get("bat");
+
+        colorSensor = hwMap.get(ColorSensor.class, "sensor_color_distance");
+        distanceSensor = hwMap.get(DistanceSensor.class, "sensor_color_distance");
         /* Set Motor Direction
          */
         //Drive
@@ -78,7 +88,7 @@ public class HardwareWombatTwo {
         rightIntake.setDirection(DcMotor.Direction.FORWARD); //CHECK
 
         //Lift
-        rackAndPinion.setDirection(DcMotor.Direction.FORWARD);
+        rackAndPinion.setDirection(DcMotor.Direction.REVERSE);
 
         /* Set Motor Power to zero
          */
@@ -104,7 +114,7 @@ public class HardwareWombatTwo {
         rightBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Lift
-        rackAndPinion.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rackAndPinion.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //These can be overwritten depending on the class thats using it
     }
     /***

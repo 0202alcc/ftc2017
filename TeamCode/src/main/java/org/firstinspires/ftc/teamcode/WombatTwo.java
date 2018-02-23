@@ -46,12 +46,8 @@ public class WombatTwo extends OpMode {
     double dump2x;
     double intakeValueLeft;
     double intakeValueRight;
+    double wombatBat;
     int liftCount = 0;
-    static final double     COUNTS_PER_MOTOR_REV    = 288 ;    // eg: REV Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 0.8188976 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * Math.PI);
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -63,7 +59,7 @@ public class WombatTwo extends OpMode {
          */
         robot.init(hardwareMap);
         // Send telemetry message to signify robot waiting;
-        robot.rackAndPinion.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         robot.leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.leftBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -93,36 +89,44 @@ public class WombatTwo extends OpMode {
      */
     @Override
     public void loop() {
+        if(gamepad2.x){
+            robot.juul.setPosition(0);
+        } else if(gamepad2.b){
+            robot.juul.setPosition(1);
+        }
+
         //gamepad2 uses the analog sticks to determine the power of the intake wheels
-        intakeValueLeft = -gamepad2.left_stick_y;
-        intakeValueRight = -gamepad2.right_stick_x;
+        intakeValueLeft = gamepad2.left_stick_y;
+        intakeValueRight = -gamepad2.right_stick_y;
         robot.leftIntake.setPower(intakeValueLeft);
         robot.rightIntake.setPower(intakeValueRight);
 
         // left bumper lowers lift, right bumper lifts lift, right triger controls servo
-        if (gamepad1.left_bumper){
-            encoderDrive(0.8, 5.5, 10);
-            liftCount -= 5;
-        }
-        if (gamepad1.right_bumper){
-            encoderDrive(0.8, -5.5, 10);
-            liftCount += 5;
-        }
-        if (gamepad2.a){
-            robot.rackAndPinion.setPower(0.5);
-        }
-        while (gamepad2.y){
-            robot.rackAndPinion.setPower(-0.5);
+        if (gamepad2.a) {
+            robot.rackAndPinion.setPower(1);
+        } else if (gamepad2.y){
+            robot.rackAndPinion.setPower(-1);
+        } else{
+            robot.rackAndPinion.setPower(0);
         }
 
         dumpx = gamepad1.right_trigger;
         dump2x = gamepad2.right_trigger;
         if((dumpx < 1.0 && dumpx > 0) || (dump2x > 0)){
-            robot.dump.setPosition(0.4); //Confirm Servo Position
+            robot.dump.setPosition(0.5); //Confirm Servo Position
         } else if(dumpx == 1.0){
-            robot.dump.setPosition(0.8); //Confirm Servo Position
+            robot.dump.setPosition(0.95); //Confirm Servo Position
         } else {
-            robot.dump.setPosition(0.29);
+            robot.dump.setPosition(0);
+        }
+
+        wombatBat = gamepad2.left_trigger;
+        if(wombatBat > 0 && wombatBat < 1){
+            robot.bat.setPosition(0.9);
+        } else if(wombatBat == 1){
+            robot.bat.setPosition(0);
+        } else {
+            robot.bat.setPosition(0.8);
         }
 
         /*
@@ -152,35 +156,6 @@ public class WombatTwo extends OpMode {
 
         telemetry.addData("dump servo: ", dumpx);
         telemetry.addData("lift count inches: ", liftCount);
-
-    }
-
-    //stolen from the autonomous to automatically align with the white line
-
-    public void encoderDrive(double speed,
-                             double leftInches,
-                             double timeoutS) {
-        int newLeftTarget = robot.rackAndPinion.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-        robot.rackAndPinion.setTargetPosition(newLeftTarget);
-
-        // Turn On RUN_TO_POSITION
-        robot.rackAndPinion.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // reset the timeout time and start motion.
-        runtime.reset();
-        robot.rackAndPinion.setPower(Math.abs(speed));
-
-        // keep looping while we are still active, and there is time left, and both motors are running.
-        // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-        // its target position, the motion will stop.  This is "safer" in the event that the robot will
-        // always end the motion as soon as possible.
-        // However, if you require that BOTH motors have finished their moves before the robot continues
-        // onto the next step, use (isBusy() || isBusy()) in the loop test.
-
-        // Turn off RUN_TO_POSITION
-//            robot.rackAndPinion.setMode(DcMotor.RunMode.RUN_USING_ENCODER);  IF THIS IS ENABLED THE RACK WILL IMMEDIATELY GO BACK DOWN
-
-        //  sleep(250);   // optional pause after each move
 
     }
 

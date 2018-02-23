@@ -13,9 +13,7 @@ import org.firstinspires.ftc.teamcode.util.VuforiaEncoder;
 public class autotestmode extends LinearOpMode {
     @Override
     public void runOpMode(){
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        VuforiaEncoder ve = new VuforiaEncoder(hardwareMap, parameters);
+        VuforiaEncoder ve = null;
         ve.enable();
         waitForStart();
         ve.activate();
