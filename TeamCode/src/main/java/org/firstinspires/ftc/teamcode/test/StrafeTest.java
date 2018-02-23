@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.map.HardwareWombatTwo;
 /**
  * Created by acandidato on 2/14/18.
  */
+@Disabled
 @Autonomous(name="Strafe Test", group="Pushbot")
 public class StrafeTest extends LinearOpMode {
     HardwareWombatTwo robot       = new HardwareWombatTwo();

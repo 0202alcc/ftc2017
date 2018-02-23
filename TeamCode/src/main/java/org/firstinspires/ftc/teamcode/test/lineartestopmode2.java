@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.map.HardwareTest;
 import org.firstinspires.ftc.teamcode.util.Angler;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 /**
  * Created by gescalona on 1/12/18.
  */
+@Disabled
 @TeleOp(name="Linear Test OP mode", group="Pushbot")
 public class lineartestopmode2 extends OpMode {
     private HardwareTest robot = new HardwareTest();
